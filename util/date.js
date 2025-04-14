@@ -1,7 +1,7 @@
-function getFormattedDate(date) {
+export function getFormattedDate(date) {
     return `${date.getDate()}-${date.getMonth() + 1}-${date.getFullYear()}`;
 }
 
-
-
-export default getFormattedDate
+export function getDateMinusDays(date, days) {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() - days)
+}

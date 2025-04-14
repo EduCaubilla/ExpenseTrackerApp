@@ -1,4 +1,4 @@
-import { FlatList, Text, StyleSheet } from "react-native"
+import { FlatList, StyleSheet } from "react-native"
 import ExpenseItem from "./ExpenseItem"
 
 function renderExpenseItem(itemData) {
