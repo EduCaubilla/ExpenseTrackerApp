@@ -1,12 +1,47 @@
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 
 import ExpensesOutput from "../components/ExpensesOutput/ExpensesOutput";
 import { ExpensesContext } from "../store/expenses-context";
 import { getDateMinusDays } from "../util/date";
+import { getExpenses } from "../util/http";
+import LoadingOverlay from "../components/UI/LoadingOverlay";
+import ErrorOverlay from "../components/UI/ErrorOverlay";
 
 function RecentExpenses() {
-  const expensesContext = useContext(ExpensesContext);
+  const [isFetching, setIsFetching] = useState();
+  const [error, setError] = useState();
 
+  const expensesContext = useContext(ExpensesContext);
+  // const [gotExpenses, setGetExpenses] = useState([])
+
+  useEffect(() => {
+    async function requestExpenses() {
+      setIsFetching(true);
+      try {
+        const expensesData = await getExpenses();
+        expensesContext.setExpenses(expensesData);
+        // setGetExpenses(expensesData);
+      } catch (error) {
+        setError("Could not get expenses from server:\n " + error);
+      }
+      setIsFetching(false);
+    }
+    requestExpenses();
+  }, []);
+
+  function errorHandler() {
+    setError(null);
+  }
+
+  if(error && !isFetching){
+    return <ErrorOverlay message={error} onConfirm={errorHandler}/>
+  }
+
+  if (isFetching) {
+    return <LoadingOverlay />
+  }
+
+    // const recentExpenses = gotExpenses.filter((expense) => {
   const recentExpenses = expensesContext.expenses.filter((expense) => {
     const today = new Date();
     const date7DaysAgo = getDateMinusDays(today, 7);

@@ -1,6 +1,7 @@
 import { Text, View, StyleSheet } from "react-native"
 import ExpensesSummary from "./ExpensesSummary"
 import ExpensesList from "./ExpensesList"
+import { GlobalStyles } from "../../constants/styles";
 
 function ExpensesOutput({ expenses, expensesPeriod, fallbackText }) {
     let content = <Text style={styles.infoText}>{ fallbackText }</Text>;
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
         paddingBottom: 5
     },
     infoText: {
-        color: "white",
+        color: GlobalStyles.colors.primary500,
         fontSize: 16,
         textAlign: "center",
         marginTop: 50
